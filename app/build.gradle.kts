@@ -1,6 +1,9 @@
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+
 plugins {
     id("com.android.application")
     kotlin("android")
+    kotlin("kapt")
 }
 
 android {
@@ -17,6 +20,8 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        // Enables Jetpack Compose for this module
+        compose = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -70,4 +75,35 @@ dependencies {
     androidTestImplementation(AndroidTestingLib.ANDROIDX_TEST_EXT_JUNIT_KTX)
     androidTestImplementation(AndroidTestingLib.ANDROIDX_TEST_RULES)
     androidTestImplementation(AndroidTestingLib.ESPRESSO_CORE)
+
+    // Dagger
+    implementation(Libs.Dagger.hilt)
+    kapt(Libs.Dagger.hiltCompiler)
+
+    // Compose
+    implementation(SupportLibs.AndroidX.Compose.layout)
+    implementation(SupportLibs.AndroidX.Compose.material)
+    implementation(SupportLibs.AndroidX.Compose.materialIconsExtended)
+    implementation(SupportLibs.AndroidX.Compose.tooling)
+    implementation(SupportLibs.AndroidX.Compose.uiUtil)
+    implementation(SupportLibs.AndroidX.Compose.runtime)
+    implementation(SupportLibs.AndroidX.Compose.runtimeLivedata)
+    implementation(SupportLibs.AndroidX.Compose.viewBinding)
+
+    // AndroidX
+    implementation(SupportLibs.AndroidX.Activity.activityCompose)
+    implementation(SupportLibs.AndroidX.coreKtx)
+    implementation(SupportLibs.AndroidX.appcompat)
+    implementation(SupportLibs.AndroidX.Lifecycle.livedata)
+    implementation(SupportLibs.AndroidX.Lifecycle.viewModelCompose)
+    implementation(SupportLibs.material)
+
+    // Data Store
+    implementation(Libs.DataStore.core)
+
+    // Serialization
+    implementation(Libs.KotlinxSerialization.core)
+
+    // Timber
+    implementation(Libs.timber)
 }
