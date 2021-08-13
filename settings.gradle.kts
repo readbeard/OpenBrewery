@@ -16,8 +16,6 @@ pluginManagement {
     }
 }
 
-rootProject.name = ("openbrewery")
-
 include(
     "app",
     "library-android",

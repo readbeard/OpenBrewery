@@ -1,4 +1,4 @@
-package com.github.readbeard.openbrewery.library
+package com.readbeard.openbrewery.library
 
 object FactorialCalculator {
 

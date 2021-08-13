@@ -1,4 +1,4 @@
-package com.github.readbeard.openbrewery.library.android
+package com.readbeard.openbrewery.library.android
 
 import android.app.Notification
 import android.app.NotificationChannel

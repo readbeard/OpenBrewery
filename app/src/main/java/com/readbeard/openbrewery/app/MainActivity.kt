@@ -1,11 +1,11 @@
-package com.github.readbeard.openbrewery.app
+package com.readbeard.openbrewery.app
 
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.github.readbeard.openbrewery.app.databinding.ActivityMainBinding
-import com.github.readbeard.openbrewery.library.FactorialCalculator
-import com.github.readbeard.openbrewery.library.android.NotificationUtil
+import com.readbeard.openbrewery.app.databinding.ActivityMainBinding
+import com.readbeard.openbrewery.library.FactorialCalculator
+import com.readbeard.openbrewery.library.android.NotificationUtil
 
 class MainActivity : AppCompatActivity() {
 

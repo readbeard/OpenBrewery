@@ -1,2 +1,2 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.github.readbeard.openbrewery.library.android" />
+    package="com.readbeard.openbrewery.library.android" />

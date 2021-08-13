@@ -1,4 +1,4 @@
-package com.github.readbeard.openbrewery.app
+package com.readbeard.openbrewery.app
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
