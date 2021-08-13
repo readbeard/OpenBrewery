@@ -98,22 +98,32 @@ object AndroidTestingLib {
 object Libs {
     const val timber = "com.jakewharton.timber:timber:4.7.1"
 
+    object Coroutines {
+        private const val version = "1.4.2"
+        const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
+        const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
+        const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
+    }
+
     object Dagger {
         private const val version = "2.37"
         const val hiltAgp = "com.google.dagger:hilt-android-gradle-plugin:$version"
         const val hilt = "com.google.dagger:hilt-android:$version"
         const val hiltCompiler = "com.google.dagger:hilt-android-compiler:$version"
     }
+
     object DataStore {
         const val version = "1.0.0-rc01"
         const val core = "androidx.datastore:datastore-preferences:$version"
     }
+
     object Kotlin {
         const val version = "1.5.10"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val extensions = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
     }
+
     object KotlinxSerialization {
         private const val version = "1.0.1"
         const val core = "org.jetbrains.kotlinx:kotlinx-serialization-json:$version"

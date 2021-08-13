@@ -18,18 +18,22 @@ android {
         versionName = AppCoordinates.APP_VERSION_NAME
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
     buildFeatures {
         viewBinding = true
         // Enables Jetpack Compose for this module
         compose = true
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
@@ -38,6 +42,10 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = SupportLibs.AndroidX.Compose.version
     }
 
     lintOptions {
@@ -60,10 +68,13 @@ android {
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk7"))
 
     implementation(project(":library-android"))
     implementation(project(":library-kotlin"))
+
+    // Kotlin
+    implementation(Libs.Kotlin.stdlib)
+    implementation(Libs.Coroutines.android)
 
     implementation(SupportLibs.ANDROIDX_APPCOMPAT)
     implementation(SupportLibs.ANDROIDX_CONSTRAINT_LAYOUT)
