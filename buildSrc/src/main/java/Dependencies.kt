@@ -13,6 +13,7 @@ object Versions {
     const val ESPRESSO_CORE = "3.4.0"
     const val JUNIT = "4.13.2"
     const val KTLINT = "0.42.0"
+    const val ANDROID_GRADLE_PLUGIN = "7.0.0"
 }
 
 object BuildPluginsVersion {
@@ -96,7 +97,10 @@ object AndroidTestingLib {
 }
 
 object Libs {
+    const val androidGradlePlugin =
+        "com.android.tools.build:gradle:${Versions.ANDROID_GRADLE_PLUGIN}"
     const val timber = "com.jakewharton.timber:timber:4.7.1"
+    const val httpLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor:4.2.1"
 
     object Coroutines {
         private const val version = "1.4.2"
@@ -118,7 +122,7 @@ object Libs {
     }
 
     object Kotlin {
-        const val version = "1.5.10"
+        const val version = "1.5.21"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val extensions = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
@@ -128,5 +132,10 @@ object Libs {
         private const val version = "1.0.1"
         const val core = "org.jetbrains.kotlinx:kotlinx-serialization-json:$version"
         const val gradle = "org.jetbrains.kotlin:kotlin-serialization:${Kotlin.version}"
+    }
+
+    object Retrofit {
+        const val core = "com.squareup.retrofit2:retrofit:2.9.0"
+        const val converter = "com.squareup.retrofit2:converter-gson:2.5.0"
     }
 }

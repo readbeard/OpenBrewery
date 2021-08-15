@@ -1,9 +1,8 @@
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
-
 plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -117,4 +116,9 @@ dependencies {
 
     // Timber
     implementation(Libs.timber)
+
+    // Retrofit
+    implementation(Libs.Retrofit.core)
+    implementation(Libs.Retrofit.converter)
+    implementation(Libs.httpLoggingInterceptor)
 }

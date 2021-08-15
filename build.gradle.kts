@@ -1,5 +1,20 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+
+    dependencies {
+        classpath(Libs.androidGradlePlugin)
+        classpath(Libs.Kotlin.gradlePlugin)
+        classpath(Libs.Dagger.hiltAgp)
+        classpath(Libs.KotlinxSerialization.gradle)
+    }
+}
+
 plugins {
     id("com.android.application") apply false
     id("com.android.library") apply false
