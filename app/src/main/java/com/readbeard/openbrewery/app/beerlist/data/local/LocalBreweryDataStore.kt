@@ -56,8 +56,7 @@ class LocalBreweryDataStore @Inject constructor(private val breweryDao: BreweryD
     override suspend fun addBreweries(breweriesList: List<Brewery>): Flow<CustomResult<List<Brewery>>> {
         return flow {
             emit(CustomResult.Loading)
-            var addedBreweriesIds: List<Long>? = null
-            addedBreweriesIds = breweryDao.addBreweries(
+            val addedBreweriesIds = breweryDao.addBreweries(
                 breweriesList.map {
                     mapBreweryToBreweryEntity(it)
                 }

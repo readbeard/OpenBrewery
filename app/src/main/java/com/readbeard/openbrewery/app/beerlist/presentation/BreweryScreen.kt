@@ -37,6 +37,7 @@ import com.readbeard.openbrewery.app.beerlist.mvi.BreweryViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 
+@ExperimentalFoundationApi
 @ExperimentalCoroutinesApi
 @FlowPreview
 @Composable
@@ -121,9 +122,9 @@ fun BreweryErrorBody(
     }
 }
 
+@ExperimentalFoundationApi
 @ExperimentalCoroutinesApi
 @FlowPreview
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BreweryContentBody(
     viewModel: BreweryViewModel,

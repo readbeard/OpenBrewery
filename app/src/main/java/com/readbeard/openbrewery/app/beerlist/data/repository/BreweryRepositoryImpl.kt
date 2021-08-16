@@ -4,6 +4,7 @@ import com.readbeard.openbrewery.app.beerlist.data.local.LocalBreweryDataStore
 import com.readbeard.openbrewery.app.beerlist.data.model.Brewery
 import com.readbeard.openbrewery.app.beerlist.data.remote.RemoteBreweryDataStore
 import com.readbeard.openbrewery.app.beerlist.utils.CustomResult
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.merge
@@ -15,6 +16,7 @@ class BreweryRepositoryImpl @Inject constructor(
     private val remoteDataStore: RemoteBreweryDataStore
 ) : BreweryRepository {
 
+    @ExperimentalCoroutinesApi
     override suspend fun getBreweries(searchQuery: String): Flow<CustomResult<List<Brewery>>> {
         val localResult = localDataStore.getBreweries(searchQuery)
         val remoteResult = syncBrewerySearchResult(searchQuery)
