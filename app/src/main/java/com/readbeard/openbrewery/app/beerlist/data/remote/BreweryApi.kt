@@ -6,5 +6,5 @@ import retrofit2.http.GET
 
 interface BreweryApi {
     @GET("/breweries")
-    suspend fun getBreweries(): Response<List<Brewery>>
+    suspend fun searchBreweries(): Response<List<Brewery>>
 }

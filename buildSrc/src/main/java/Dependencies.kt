@@ -138,4 +138,12 @@ object Libs {
         const val core = "com.squareup.retrofit2:retrofit:2.9.0"
         const val converter = "com.squareup.retrofit2:converter-gson:2.5.0"
     }
+
+    object Room {
+        private const val version = "2.3.0"
+        const val core = "androidx.room:room-runtime:$version"
+        const val compiler = "androidx.room:room-compiler:$version"
+        const val room_ktx = "androidx.room:room-ktx:$version"
+        const val pagination = "androidx.room:room-paging:2.4.0-alpha04"
+    }
 }

@@ -11,10 +11,4 @@ interface BreweryDataStore {
     suspend fun getBreweries(searchQuery: String): Flow<CustomResult<List<Brewery>>>
 
     fun addBreweries(breweriesList: List<Brewery>): Flow<Unit>
-
-    fun saveSearchHistory(list: List<String>): Flow<Unit>
-
-    fun saveSearchHistory(currentSearch: String): Flow<Unit>
-
-    fun getSearchHistory(): Flow<List<String>>
 }

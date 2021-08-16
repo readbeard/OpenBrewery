@@ -121,4 +121,10 @@ dependencies {
     implementation(Libs.Retrofit.core)
     implementation(Libs.Retrofit.converter)
     implementation(Libs.httpLoggingInterceptor)
+
+    // Room
+    implementation(Libs.Room.core)
+    kapt(Libs.Room.compiler)
+    implementation(Libs.Room.room_ktx)
+    implementation(Libs.Room.pagination)
 }

@@ -1,7 +1,7 @@
-package com.readbeard.openbrewery.app.beerlist.data.repository
+package com.readbeard.openbrewery.app.beerlist.data.remote
 
 import com.readbeard.openbrewery.app.beerlist.data.model.Brewery
-import com.readbeard.openbrewery.app.beerlist.data.remote.BreweryApi
+import com.readbeard.openbrewery.app.beerlist.data.repository.BreweryDataStore
 import com.readbeard.openbrewery.app.beerlist.utils.CustomResult
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
