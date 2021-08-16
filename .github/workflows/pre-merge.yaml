@@ -32,5 +32,6 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
       - name: Run Gradle
+        run: ./gradlew build check --continue
       - name: Stop Gradle
         run: ./gradlew --stop

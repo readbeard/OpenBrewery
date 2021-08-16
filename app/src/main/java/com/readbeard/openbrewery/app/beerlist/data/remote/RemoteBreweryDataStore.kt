@@ -43,20 +43,17 @@ class RemoteBreweryDataStore @Inject constructor(private val breweryApi: Brewery
     }
 
     suspend fun getBreweries(page: Int): CustomResult<List<Brewery>> {
-        try {
+        return try {
             val response = breweryApi.searchBreweriesAtPage(page)
-            if (response.isSuccessful) {
-                val items = response.body()
-                if (items != null) {
-                    return CustomResult.Success(items)
-                } else {
-                    Timber.e("Retrieved a null list of breweries")
-                }
+
+            if (response.isSuccessful && response.body() != null) {
+                CustomResult.Success(response.body()!!)
+            } else {
+                CustomResult.Error(Exception("Failed to retrieve list of breweries ${response.errorBody()}"))
             }
         } catch (e: IOException) {
             Timber.d("Paginated breweries retrieval failed with exception $e")
-            return CustomResult.Error(e)
+            CustomResult.Error(e)
         }
-        return CustomResult.Loading
     }
 }

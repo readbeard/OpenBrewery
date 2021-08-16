@@ -10,7 +10,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.stateIn
@@ -84,7 +83,7 @@ class BreweryViewModel @Inject constructor(
 
             if (page.value > 1) {
                 val result = breweryRepositoryImpl.loadBreweriesAtPage(page.value)
-                appendBreweries((result as CustomResult.Success).value) // TODO: handle error case
+                appendBreweries((result as CustomResult.Success).value)
             }
 
             setState(BreweryState.Loaded(savedBreweries.value))
