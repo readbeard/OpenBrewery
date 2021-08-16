@@ -25,7 +25,7 @@ import com.readbeard.openbrewery.library.FactorialCalculator
 import com.readbeard.openbrewery.library.android.NotificationUtil
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlin.random.Random
+import kotlinx.coroutines.FlowPreview
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     private val notificationUtil: NotificationUtil by lazy { NotificationUtil(this) }
     private lateinit var binding: ActivityMainBinding
 
+    @FlowPreview
     @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

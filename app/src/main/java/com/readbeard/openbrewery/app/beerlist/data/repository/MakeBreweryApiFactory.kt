@@ -4,12 +4,12 @@ import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.readbeard.openbrewery.app.beerlist.data.remote.BreweryApi
-import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
 object MakeBreweryApiFactory {
     private const val BASE_URL = "https://api.openbrewerydb.org/"
@@ -52,7 +52,7 @@ object MakeBreweryApiFactory {
     private fun makeLoggingInterceptor(): HttpLoggingInterceptor {
         val loggingInterceptor = HttpLoggingInterceptor(httpLogger)
         loggingInterceptor.level =
-            HttpLoggingInterceptor.Level.BODY //No need to check if debug, since using Timber
+            HttpLoggingInterceptor.Level.BODY // No need to check if debug, since using Timber
         return loggingInterceptor
     }
 
