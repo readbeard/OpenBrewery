@@ -17,7 +17,5 @@ pluginManagement {
 }
 
 include(
-    "app",
-    "library-android",
-    "library-kotlin"
+    "app"
 )

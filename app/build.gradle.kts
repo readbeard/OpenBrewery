@@ -68,9 +68,6 @@ android {
 
 dependencies {
 
-    implementation(project(":library-android"))
-    implementation(project(":library-kotlin"))
-
     // Kotlin
     implementation(Libs.Kotlin.stdlib)
     implementation(Libs.Coroutines.android)
