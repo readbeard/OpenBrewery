@@ -46,7 +46,7 @@ class BreweryViewModel @Inject constructor(
             val breweries = breweryRepositoryImpl.getBreweries(searchTerm)
             breweries.stateIn(
                 scope = viewModelScope,
-                started = WhileSubscribed(5000),
+                started = WhileSubscribed(STOP_TIMEOUT_MILLIS),
                 initialValue = CustomResult.Loading
             )
                 .collect { result ->
@@ -64,5 +64,8 @@ class BreweryViewModel @Inject constructor(
                     }
                 }
         }
+    }
+    companion object {
+        private const val STOP_TIMEOUT_MILLIS = 5000L
     }
 }

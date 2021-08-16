@@ -26,23 +26,23 @@ class LocalBreweryDataStore @Inject constructor(private val breweryDao: BreweryD
                     breweryList.map {
                         Brewery(
                             id = it.id,
-                            obdb_id = it.obdb_id,
+                            obdbId = it.obdbId,
                             name = it.name,
-                            brewery_type = it.brewery_type,
+                            breweryType = it.breweryType,
                             street = it.street,
-                            address_2 = it.address_2,
-                            address_3 = it.address_3,
+                            address2 = it.address2,
+                            address3 = it.address3,
                             city = it.city,
                             state = it.state,
-                            county_province = it.county_province,
-                            postal_code = it.postal_code,
+                            countyProvince = it.countyProvince,
+                            postalCode = it.postalCode,
                             country = it.country,
                             longitude = it.longitude,
                             latitude = it.latitude,
                             phone = it.phone,
-                            website_url = it.website_url,
-                            updated_at = it.updated_at,
-                            created_at = it.created_at
+                            websiteUrl = it.websiteUrl,
+                            updatedAt = it.updatedAt,
+                            createdAt = it.createdAt
                         )
                     }
                     emit(CustomResult.Success(breweryList))

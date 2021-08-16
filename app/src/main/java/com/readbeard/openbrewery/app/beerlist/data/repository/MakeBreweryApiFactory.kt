@@ -13,6 +13,8 @@ import java.util.concurrent.TimeUnit
 
 object MakeBreweryApiFactory {
     private const val BASE_URL = "https://api.openbrewerydb.org/"
+    private const val TIMEOUT_MILLIS = 120L
+
     fun makeBreweryApi(): BreweryApi {
         val okHttpClient = makeOkHttpClient(
             makeLoggingInterceptor()
@@ -37,8 +39,8 @@ object MakeBreweryApiFactory {
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
-            .connectTimeout(120, TimeUnit.SECONDS)
-            .readTimeout(120, TimeUnit.SECONDS)
+            .connectTimeout(TIMEOUT_MILLIS, TimeUnit.SECONDS)
+            .readTimeout(TIMEOUT_MILLIS, TimeUnit.SECONDS)
             .build()
     }
 
