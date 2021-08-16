@@ -42,4 +42,8 @@ class BreweryRepositoryImpl @Inject constructor(
     override suspend fun addBreweries(breweriesList: List<Brewery>): Flow<CustomResult<List<Brewery>>> {
         return localDataStore.addBreweries(breweriesList)
     }
+
+    override suspend fun loadBreweriesAtPage(page: Int): CustomResult<List<Brewery>> {
+        return remoteDataStore.getBreweries(page)
+    }
 }

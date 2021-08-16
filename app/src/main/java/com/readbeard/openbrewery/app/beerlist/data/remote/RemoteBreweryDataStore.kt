@@ -41,4 +41,22 @@ class RemoteBreweryDataStore @Inject constructor(private val breweryApi: Brewery
     override suspend fun addBreweries(breweriesList: List<Brewery>): Flow<CustomResult<List<Brewery>>> {
         TODO("Not yet implemented")
     }
+
+    suspend fun getBreweries(page: Int): CustomResult<List<Brewery>> {
+        try {
+            val response = breweryApi.searchBreweriesAtPage(page)
+            if (response.isSuccessful) {
+                val items = response.body()
+                if (items != null) {
+                    return CustomResult.Success(items)
+                } else {
+                    Timber.e("Retrieved a null list of breweries")
+                }
+            }
+        } catch (e: IOException) {
+            Timber.d("Paginated breweries retrieval failed with exception $e")
+            return CustomResult.Error(e)
+        }
+        return CustomResult.Loading
+    }
 }

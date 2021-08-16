@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
@@ -60,7 +60,7 @@ fun BreweryScreen(
                 BreweryErrorBody()
             }
             is BreweryState.Loaded -> {
-                BreweryContentBody((state as BreweryState.Loaded).movies)
+                BreweryContentBody(viewModel, (state as BreweryState.Loaded).breweries)
             }
         }
     }
@@ -121,24 +121,30 @@ fun BreweryErrorBody(
     }
 }
 
+@ExperimentalCoroutinesApi
+@FlowPreview
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BreweryContentBody(
+    viewModel: BreweryViewModel,
     breweries: List<Brewery>,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
         cells = GridCells.Adaptive(
-            120.dp
+            200.dp
         ),
         contentPadding = PaddingValues(
             4.dp
         ),
         modifier = modifier
     ) {
-        items(breweries) { movie ->
+        itemsIndexed(breweries) { index, brewery ->
+            if (index + 1 >= viewModel.page.value * BreweryViewModel.PAGE_SIZE) {
+                viewModel.onIntent(BreweryIntent.OnScrolledDown(index))
+            }
             BreweryCard(
-                movie,
+                brewery,
                 modifier = Modifier.padding(4.dp)
             )
         }

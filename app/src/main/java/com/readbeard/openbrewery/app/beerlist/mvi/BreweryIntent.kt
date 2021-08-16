@@ -6,4 +6,6 @@ sealed class BreweryIntent {
     data class OnSearchChanged(
         val searchTerm: String
     ) : BreweryIntent()
+
+    data class OnScrolledDown(val index: Int) : BreweryIntent()
 }

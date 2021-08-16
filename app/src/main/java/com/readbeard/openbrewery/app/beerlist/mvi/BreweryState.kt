@@ -6,7 +6,7 @@ sealed class BreweryState {
     object Loading : BreweryState()
 
     data class Loaded(
-        val movies: List<Brewery>
+        val breweries: List<Brewery>
     ) : BreweryState()
 
     object Error : BreweryState()
