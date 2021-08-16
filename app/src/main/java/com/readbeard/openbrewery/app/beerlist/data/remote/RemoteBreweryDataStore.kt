@@ -18,7 +18,7 @@ class RemoteBreweryDataStore @Inject constructor(private val breweryApi: Brewery
     override suspend fun getBreweries(searchQuery: String): Flow<CustomResult<List<Brewery>>> {
         return flow {
             emit(CustomResult.Loading)
-            val response = breweryApi.getBreweries()
+            val response = breweryApi.searchBreweries()
             if (response.isSuccessful) {
                 val items = response.body()
                 if (items != null)
@@ -33,18 +33,6 @@ class RemoteBreweryDataStore @Inject constructor(private val breweryApi: Brewery
     }
 
     override fun addBreweries(breweriesList: List<Brewery>): Flow<Unit> {
-        TODO("Not yet implemented")
-    }
-
-    override fun saveSearchHistory(list: List<String>): Flow<Unit> {
-        TODO("Not yet implemented")
-    }
-
-    override fun saveSearchHistory(currentSearch: String): Flow<Unit> {
-        TODO("Not yet implemented")
-    }
-
-    override fun getSearchHistory(): Flow<List<String>> {
         TODO("Not yet implemented")
     }
 }
