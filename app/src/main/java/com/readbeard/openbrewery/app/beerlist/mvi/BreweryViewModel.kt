@@ -1,20 +1,18 @@
 package com.readbeard.openbrewery.app.beerlist.mvi
 
-import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import com.readbeard.openbrewery.app.base.mvi.BaseViewModel
 import com.readbeard.openbrewery.app.beerlist.data.repository.BreweryRepositoryImpl
+import com.readbeard.openbrewery.app.beerlist.utils.CustomResult
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.lang.Exception
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -32,14 +30,10 @@ class BreweryViewModel @Inject constructor(
     override fun onIntent(intent: BreweryIntent) {
         when (intent) {
             BreweryIntent.OnStart -> {
-                runBlocking {
-                    loadBreweries()
-                }
+                loadBreweries()
             }
             is BreweryIntent.OnSearchChanged -> {
-                runBlocking {
-                    loadBreweries(intent.searchTerm)
-                }
+                loadBreweries(intent.searchTerm)
             }
         }
     }
@@ -49,16 +43,27 @@ class BreweryViewModel @Inject constructor(
     private fun loadBreweries(searchTerm: String = "") {
         setState(BreweryState.Loading)
         viewModelScope.launch(Dispatchers.Main) {
-            try {
-                val breweries = breweryRepositoryImpl.getBreweries(searchTerm)
-                breweries.observeForever(Observer {
-                    if (it != null) {
-                        setState(BreweryState.Loaded(it))
+            val breweries = breweryRepositoryImpl.getBreweries(searchTerm)
+            breweries
+                .stateIn(
+                    scope = viewModelScope,
+                    started = WhileSubscribed(5000),
+                    initialValue = CustomResult.Loading
+                )
+                .collect { result ->
+                    when (result) {
+                        is CustomResult.Success -> {
+                            val breweryList = result.value
+                            setState(BreweryState.Loaded(breweryList))
+                        }
+                        is CustomResult.Error -> {
+                            setState(BreweryState.Error)
+                        }
+                        is CustomResult.Loading -> {
+                            setState(BreweryState.Loading)
+                        }
                     }
-                })
-            } catch (exception: Exception) {
-                setState(BreweryState.Error)
-            }
+                }
         }
     }
 }

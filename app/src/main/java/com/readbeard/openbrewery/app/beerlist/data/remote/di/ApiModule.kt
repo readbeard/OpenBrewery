@@ -10,7 +10,6 @@ import com.readbeard.openbrewery.app.beerlist.data.repository.RemoteBreweryDataS
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Named
 import javax.inject.Singleton
@@ -28,7 +27,8 @@ class ApiModule {
 
     @Provides
     @Named("remote")
-    fun provideRemoteBreweryDataStore(api: BreweryApi): BreweryDataStore = RemoteBreweryDataStore(api)
+    fun provideRemoteBreweryDataStore(api: BreweryApi): BreweryDataStore =
+        RemoteBreweryDataStore(api)
 
     @Provides
     fun provideBreweryRepositoryImpl(

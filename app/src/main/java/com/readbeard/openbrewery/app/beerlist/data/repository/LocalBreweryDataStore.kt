@@ -2,6 +2,7 @@ package com.readbeard.openbrewery.app.beerlist.data.repository
 
 import androidx.lifecycle.LiveData
 import com.readbeard.openbrewery.app.beerlist.data.model.Brewery
+import com.readbeard.openbrewery.app.beerlist.utils.CustomResult
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
@@ -10,7 +11,7 @@ class LocalBreweryDataStore @Inject constructor() : BreweryDataStore {
         TODO("Not yet implemented")
     }
 
-    override fun getBreweries(searchQuery: String): LiveData<List<Brewery>> {
+    override suspend fun getBreweries(searchQuery: String): Flow<CustomResult<List<Brewery>>> {
         TODO("Not yet implemented")
     }
 
