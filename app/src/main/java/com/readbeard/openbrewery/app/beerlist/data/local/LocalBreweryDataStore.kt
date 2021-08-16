@@ -4,12 +4,12 @@ import com.readbeard.openbrewery.app.beerlist.data.local.database.BreweryDao
 import com.readbeard.openbrewery.app.beerlist.data.model.Brewery
 import com.readbeard.openbrewery.app.beerlist.data.repository.BreweryDataStore
 import com.readbeard.openbrewery.app.beerlist.utils.CustomResult
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import timber.log.Timber
+import javax.inject.Inject
 
 class LocalBreweryDataStore @Inject constructor(private val breweryDao: BreweryDao) :
     BreweryDataStore {

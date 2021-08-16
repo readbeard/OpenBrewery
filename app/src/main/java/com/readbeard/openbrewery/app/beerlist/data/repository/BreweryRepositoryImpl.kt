@@ -4,10 +4,10 @@ import com.readbeard.openbrewery.app.beerlist.data.local.LocalBreweryDataStore
 import com.readbeard.openbrewery.app.beerlist.data.model.Brewery
 import com.readbeard.openbrewery.app.beerlist.data.remote.RemoteBreweryDataStore
 import com.readbeard.openbrewery.app.beerlist.utils.CustomResult
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.merge
+import javax.inject.Inject
 
 class BreweryRepositoryImpl @Inject constructor(
     private val localDataStore: LocalBreweryDataStore,

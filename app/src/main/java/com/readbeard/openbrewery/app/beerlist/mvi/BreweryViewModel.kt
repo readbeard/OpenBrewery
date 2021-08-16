@@ -5,7 +5,6 @@ import com.readbeard.openbrewery.app.base.mvi.BaseViewModel
 import com.readbeard.openbrewery.app.beerlist.data.repository.BreweryRepositoryImpl
 import com.readbeard.openbrewery.app.beerlist.utils.CustomResult
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -13,6 +12,7 @@ import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -44,12 +44,11 @@ class BreweryViewModel @Inject constructor(
         setState(BreweryState.Loading)
         viewModelScope.launch(Dispatchers.Main) {
             val breweries = breweryRepositoryImpl.getBreweries(searchTerm)
-            breweries
-                .stateIn(
-                    scope = viewModelScope,
-                    started = WhileSubscribed(5000),
-                    initialValue = CustomResult.Loading
-                )
+            breweries.stateIn(
+                scope = viewModelScope,
+                started = WhileSubscribed(5000),
+                initialValue = CustomResult.Loading
+            )
                 .collect { result ->
                     when (result) {
                         is CustomResult.Success -> {

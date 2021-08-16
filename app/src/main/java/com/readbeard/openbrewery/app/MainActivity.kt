@@ -86,13 +86,11 @@ class MainActivity : AppCompatActivity() {
         Column(
             Modifier
                 .clickable {
-                    Toast
-                        .makeText(
-                            this,
-                            "Clicked on ${brewery.name}",
-                            Toast.LENGTH_SHORT
-                        )
-                        .show()
+                    Toast.makeText(
+                        this,
+                        "Clicked on ${brewery.name}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
         ) {
             Text(
