@@ -9,5 +9,5 @@ interface BreweryDataStore {
 
     suspend fun getBreweries(searchQuery: String): Flow<CustomResult<List<Brewery>>>
 
-    fun addBreweries(breweriesList: List<Brewery>): Flow<Unit>
+    suspend fun addBreweries(breweriesList: List<Brewery>): Flow<CustomResult<List<Brewery>>>
 }

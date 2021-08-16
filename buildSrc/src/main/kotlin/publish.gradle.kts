@@ -55,7 +55,6 @@ tasks.dokkaJavadoc.configure {
     }
 }
 
-
 afterEvaluate {
 
     publishing {

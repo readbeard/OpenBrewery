@@ -152,7 +152,7 @@ fun BreweryCard(brewery: Brewery, modifier: Modifier) {
     ) {
         Column {
             Text(
-                brewery.name,
+                brewery.name!!,
                 style = MaterialTheme.typography.body1,
                 textAlign = TextAlign.Center,
                 maxLines = 1,
@@ -163,7 +163,7 @@ fun BreweryCard(brewery: Brewery, modifier: Modifier) {
                     .padding(top = 8.dp)
             )
             Text(
-                brewery.city,
+                brewery.city!!,
                 style = MaterialTheme.typography.body2,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
