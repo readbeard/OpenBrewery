@@ -35,11 +35,11 @@ class BreweryRepositoryImpl @Inject constructor(
         return localDataStore.addBreweries((remoteResult as CustomResult.Success).value)
     }
 
-    override suspend fun loadBreweriesAtPage(page: Int): CustomResult<List<Brewery>> {
-        val fetchedBreweriesResult = remoteDataStore.fetchBreweriesAtPage(page)
+    override suspend fun loadBreweriesByFilter(filter: HashMap<String, Any>): Flow<CustomResult<List<Brewery>>> {
+        val fetchedBreweriesResult = remoteDataStore.fetchBreweriesByFilter(filter)
         if (fetchedBreweriesResult is CustomResult.Success) {
             localDataStore.addBreweries(fetchedBreweriesResult.value).collect()
         }
-        return fetchedBreweriesResult
+        return flow { emit(fetchedBreweriesResult) }
     }
 }

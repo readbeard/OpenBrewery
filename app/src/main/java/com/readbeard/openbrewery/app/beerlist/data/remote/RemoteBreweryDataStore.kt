@@ -50,4 +50,19 @@ class RemoteBreweryDataStore @Inject constructor(private val breweryApi: Brewery
             CustomResult.Error(e)
         }
     }
+
+    suspend fun fetchBreweriesByFilter(filter: HashMap<String, Any>): CustomResult<List<Brewery>> {
+        return try {
+            val response = breweryApi.searchBreweriesBy(filter)
+
+            if (response.isSuccessful && response.body() != null) {
+                CustomResult.Success(response.body()!!)
+            } else {
+                CustomResult.Error(Exception("Failed to retrieve list of breweries ${response.errorBody()}"))
+            }
+        } catch (e: IOException) {
+            Timber.d("Paginated breweries retrieval failed with exception $e")
+            CustomResult.Error(e)
+        }
+    }
 }

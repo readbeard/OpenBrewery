@@ -8,5 +8,5 @@ interface BreweryRepository {
 
     suspend fun getBreweries(searchQuery: String): Flow<CustomResult<List<Brewery>>>
 
-    suspend fun loadBreweriesAtPage(page: Int): CustomResult<List<Brewery>>
+    suspend fun loadBreweriesByFilter(filter: HashMap<String, Any>): Flow<CustomResult<List<Brewery>>>
 }
