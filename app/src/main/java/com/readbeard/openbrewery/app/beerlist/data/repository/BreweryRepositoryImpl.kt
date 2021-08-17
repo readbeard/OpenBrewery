@@ -1,9 +1,9 @@
 package com.readbeard.openbrewery.app.beerlist.data.repository
 
+import com.readbeard.openbrewery.app.base.utils.CustomResult
 import com.readbeard.openbrewery.app.beerlist.data.local.LocalBreweryDataStore
 import com.readbeard.openbrewery.app.beerlist.data.model.Brewery
 import com.readbeard.openbrewery.app.beerlist.data.remote.RemoteBreweryDataStore
-import com.readbeard.openbrewery.app.beerlist.utils.CustomResult
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect

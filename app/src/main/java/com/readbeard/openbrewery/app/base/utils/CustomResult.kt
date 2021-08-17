@@ -1,4 +1,4 @@
-package com.readbeard.openbrewery.app.beerlist.utils
+package com.readbeard.openbrewery.app.base.utils
 
 sealed class CustomResult<out T : Any> {
     object Loading : CustomResult<Nothing>()

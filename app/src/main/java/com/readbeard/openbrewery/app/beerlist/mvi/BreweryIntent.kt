@@ -1,11 +1,18 @@
 package com.readbeard.openbrewery.app.beerlist.mvi
 
+import com.readbeard.openbrewery.app.beerlist.data.model.BreweryFilter
+
 sealed class BreweryIntent {
     object OnStart : BreweryIntent()
 
     data class OnSearchChanged(
-        val searchTerm: String
-    ) : BreweryIntent()
+        override val filter: BreweryFilter,
+        override val searchTerm: String
+    ) : OnFilterSelected(filter, searchTerm)
 
-    object OnScrolledDown : BreweryIntent()
+    data class OnScrolledDown(override val filter: BreweryFilter, override val searchTerm: String) :
+        OnFilterSelected(filter, searchTerm)
+
+    open class OnFilterSelected(open val filter: BreweryFilter, open val searchTerm: String) :
+        BreweryIntent()
 }

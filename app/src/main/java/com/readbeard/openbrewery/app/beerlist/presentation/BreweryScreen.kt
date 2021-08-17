@@ -1,6 +1,7 @@
 package com.readbeard.openbrewery.app.beerlist.presentation
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Card
@@ -36,7 +38,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.readbeard.openbrewery.app.base.presentation.BreweryFilterChip
 import com.readbeard.openbrewery.app.beerlist.data.model.Brewery
+import com.readbeard.openbrewery.app.beerlist.data.model.getAllFilters
+import com.readbeard.openbrewery.app.beerlist.data.model.getFilter
 import com.readbeard.openbrewery.app.beerlist.mvi.BreweryIntent
 import com.readbeard.openbrewery.app.beerlist.mvi.BreweryState
 import com.readbeard.openbrewery.app.beerlist.mvi.BreweryViewModel
@@ -44,6 +49,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
+import timber.log.Timber
+import java.util.Locale
 
 @InternalCoroutinesApi
 @ExperimentalFoundationApi
@@ -58,7 +65,7 @@ fun BreweryScreen(
     Scaffold(
         topBar = {
             BreweryTopBar {
-                viewModel.onIntent(BreweryIntent.OnSearchChanged(it))
+                viewModel.onIntent(BreweryIntent.OnSearchChanged(state.selectedFilter, it))
             }
         }
     ) {
@@ -79,32 +86,55 @@ fun BreweryScreen(
     }
 }
 
+@ExperimentalCoroutinesApi
+@FlowPreview
 @Preview
 @Composable
 fun BreweryTopBar(
     modifier: Modifier = Modifier,
     onSearchTextChanged: (searchText: String) -> Unit = {},
 ) {
-    var searchTerm by rememberSaveable { mutableStateOf("") }
+    val viewModel: BreweryViewModel = viewModel()
+    val uiState by viewModel.state
 
+    var searchTerm by rememberSaveable { mutableStateOf("") }
     Surface(
         color = MaterialTheme.colors.primary,
         elevation = 8.dp,
         modifier = modifier,
     ) {
-        TextField(
-            value = searchTerm,
-            placeholder = { Text("Search by name") },
-            singleLine = true,
-            modifier = Modifier
-                .testTag("searchBar")
-                .padding(8.dp)
-                .fillMaxWidth(),
-            onValueChange = {
-                searchTerm = it
-                onSearchTextChanged(it)
+        Column {
+            TextField(
+                value = searchTerm,
+                placeholder = { Text("Search by ${uiState.selectedFilter.name.lowercase(Locale.getDefault())}") },
+                singleLine = true,
+                modifier = Modifier
+                    .testTag("searchBar")
+                    .padding(8.dp)
+                    .fillMaxWidth(),
+                onValueChange = {
+                    searchTerm = it
+                    onSearchTextChanged(it)
+                }
+            )
+
+            LazyRow(
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(8.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                itemsIndexed(getAllFilters()) { _, item ->
+                    BreweryFilterChip(
+                        filter = item,
+                        isSelected = uiState.selectedFilter == getFilter(item.value),
+                        onSelectedFilterChanged = {
+                            viewModel.onIntent(BreweryIntent.OnFilterSelected(item, searchTerm))
+                        },
+                        onExecuteSearch = { Timber.d("Clicked on ${getFilter(item.value).value}") }
+                    )
+                }
             }
-        )
+        }
     }
 }
 
@@ -144,6 +174,7 @@ fun BreweryContentBody(
     breweries: List<Brewery>,
     modifier: Modifier = Modifier
 ) {
+    val uiState by viewModel.state
     val state = rememberLazyListState()
 
     LazyColumn(
@@ -151,7 +182,9 @@ fun BreweryContentBody(
         contentPadding = PaddingValues(
             4.dp
         ),
-        modifier = modifier.fillMaxHeight().fillMaxWidth()
+        modifier = modifier
+            .fillMaxHeight()
+            .fillMaxWidth()
     ) {
         itemsIndexed(breweries) { index, brewery ->
             val uiState by viewModel.state
@@ -168,7 +201,7 @@ fun BreweryContentBody(
     }
 
     state.OnBottomReached {
-        viewModel.onIntent(BreweryIntent.OnScrolledDown)
+        viewModel.onIntent(BreweryIntent.OnScrolledDown(uiState.selectedFilter, uiState.searchTerm))
     }
 }
 

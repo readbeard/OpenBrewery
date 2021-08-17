@@ -1,12 +1,13 @@
 package com.readbeard.openbrewery.app.beerlist.mvi
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.readbeard.openbrewery.app.base.mvi.BaseViewModel
+import com.readbeard.openbrewery.app.base.utils.CustomResult
 import com.readbeard.openbrewery.app.beerlist.data.model.Brewery
+import com.readbeard.openbrewery.app.beerlist.data.model.BreweryFilter
+import com.readbeard.openbrewery.app.beerlist.data.model.getFilter
 import com.readbeard.openbrewery.app.beerlist.data.remote.BreweryApi
 import com.readbeard.openbrewery.app.beerlist.data.repository.BreweryRepositoryImpl
-import com.readbeard.openbrewery.app.beerlist.utils.CustomResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,13 +24,17 @@ import javax.inject.Inject
 @HiltViewModel
 class BreweryViewModel @Inject constructor(
     private val breweryRepositoryImpl: BreweryRepositoryImpl
-) : BaseViewModel<BreweryState, BreweryIntent>(BreweryState.Loading) {
+) : BaseViewModel<BreweryState, BreweryIntent>(BreweryState.Loading(BreweryFilter.NAME, 1, "")) {
 
-    val page = mutableStateOf(2)
-    var savedBreweries = mutableStateOf(ArrayList<Brewery>())
+    private var page: Int
+    private var savedBreweries: List<Brewery>
+    private var selectedFilter: BreweryFilter = BreweryFilter.NONE
 
     init {
         onIntent(BreweryIntent.OnStart)
+        page = 2
+        savedBreweries = ArrayList()
+        selectedFilter = BreweryFilter.NONE
     }
 
     @FlowPreview
@@ -40,10 +45,16 @@ class BreweryViewModel @Inject constructor(
                 loadBreweries()
             }
             is BreweryIntent.OnSearchChanged -> {
-                loadBreweries(intent.searchTerm)
+                if (intent.filter != BreweryFilter.NONE) {
+                    loadFilteredValues(intent.searchTerm)
+                }
             }
             is BreweryIntent.OnScrolledDown -> {
-                nextPage()
+                loadFilteredValues(intent.searchTerm, true)
+            }
+            is BreweryIntent.OnFilterSelected -> {
+                loadFilteredValues(intent.searchTerm)
+                onSelectedBreweryFilterChange(intent.filter)
             }
         }
     }
@@ -51,7 +62,7 @@ class BreweryViewModel @Inject constructor(
     @ExperimentalCoroutinesApi
     @FlowPreview
     private fun loadBreweries(searchTerm: String = "") {
-        setState(BreweryState.Loading)
+        setState(BreweryState.Loading(selectedFilter, page, searchTerm))
         viewModelScope.launch(Dispatchers.Main) {
             val breweries = breweryRepositoryImpl.getBreweries(searchTerm)
 
@@ -64,35 +75,68 @@ class BreweryViewModel @Inject constructor(
                     when (result) {
                         is CustomResult.Success -> {
                             val breweryList = result.value
-                            savedBreweries.value = breweryList as ArrayList<Brewery>
-                            setState(BreweryState.Loaded(breweryList))
+                            savedBreweries = breweryList as ArrayList<Brewery>
+                            setState(
+                                BreweryState.Loaded(
+                                    breweryList,
+                                    selectedFilter,
+                                    page,
+                                    searchTerm
+                                )
+                            )
                         }
                         is CustomResult.Error -> {
-                            setState(BreweryState.Error)
+                            setState(BreweryState.Error(selectedFilter, page, searchTerm))
                         }
                         is CustomResult.Loading -> {
-                            setState(BreweryState.Loading)
+                            setState(BreweryState.Loading(selectedFilter, page, searchTerm))
                         }
                     }
                 }
         }
     }
 
-    private fun nextPage() {
+    private fun loadFilteredValues(searchTerm: String = "", nextPage: Boolean = false) {
         viewModelScope.launch(Dispatchers.Main) {
+            val filterHashMap: HashMap<String, Any> =
+                hashMapOf(Pair(selectedFilter.value, searchTerm))
+            if (nextPage) {
+                filterHashMap[BreweryApi.page] = page
+            } else {
+                setState(BreweryState.Loading(selectedFilter, page, searchTerm))
+            }
+
             // Simulate a delay, as the API is pretty fast
             delay(LOADING_DELAY)
 
-            breweryRepositoryImpl.loadBreweriesByFilter(hashMapOf(Pair(BreweryApi.page, page.value)))
+            breweryRepositoryImpl.loadBreweriesByFilter(filterHashMap)
                 .collect { result ->
                     when (result) {
                         is CustomResult.Success -> {
-                            incrementPage()
+                            if (nextPage) {
+                                page += 1
+                            } else {
+                                savedBreweries = ArrayList()
+                            }
                             appendBreweries(result.value)
-                            setState(BreweryState.Loaded(savedBreweries.value))
+                            setState(
+                                BreweryState.Loaded(
+                                    savedBreweries,
+                                    selectedFilter,
+                                    page,
+                                    searchTerm
+                                )
+                            )
                         }
                         is CustomResult.Error -> {
-                            setState(BreweryState.ErrorLoadingPage(savedBreweries.value))
+                            setState(
+                                BreweryState.ErrorLoadingPage(
+                                    savedBreweries,
+                                    selectedFilter,
+                                    page,
+                                    searchTerm
+                                )
+                            )
                         }
                         else ->
                             return@collect
@@ -105,13 +149,19 @@ class BreweryViewModel @Inject constructor(
      * Append new recipes to the current list of recipes
      */
     private fun appendBreweries(recipes: List<Brewery>) {
-        val current = ArrayList(this.savedBreweries.value)
+        val current = ArrayList(this.savedBreweries)
         current.addAll(recipes)
-        this.savedBreweries.value = current
+        this.savedBreweries = current
     }
 
-    private fun incrementPage() {
-        page.value = page.value + 1
+    private fun onSelectedBreweryFilterChange(filter: BreweryFilter) {
+        val newFilter = getFilter(filter.value)
+        selectedFilter = if (newFilter == selectedFilter) {
+            BreweryFilter.NONE
+        } else {
+            newFilter
+        }
+        page = 0
     }
 
     companion object {

@@ -1,11 +1,11 @@
 package com.readbeard.openbrewery.app.beerlist.data.local
 
 import android.database.sqlite.SQLiteException
+import com.readbeard.openbrewery.app.base.utils.CustomResult
 import com.readbeard.openbrewery.app.beerlist.data.local.database.BreweryDao
 import com.readbeard.openbrewery.app.beerlist.data.local.database.BreweryEntity
 import com.readbeard.openbrewery.app.beerlist.data.model.Brewery
 import com.readbeard.openbrewery.app.beerlist.data.repository.BreweryDataStore
-import com.readbeard.openbrewery.app.beerlist.utils.CustomResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import timber.log.Timber
