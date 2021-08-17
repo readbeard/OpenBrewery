@@ -72,24 +72,24 @@ class LocalBreweryDataStore @Inject constructor(private val breweryDao: BreweryD
 
     private fun mapBreweryToBreweryEntity(it: Brewery): BreweryEntity {
         return BreweryEntity(
-            id = it.id ?: -1,
-            obdbId = it.obdbId ?: "",
-            name = it.name ?: "",
-            breweryType = it.breweryType ?: "",
-            street = it.street ?: "",
-            address2 = it.address2 ?: "",
-            address3 = it.address3 ?: "",
-            city = it.city ?: "",
-            state = it.state ?: "",
-            countyProvince = it.countyProvince ?: "",
-            postalCode = it.postalCode ?: "",
-            country = it.country ?: "",
-            longitude = it.longitude ?: "",
-            latitude = it.latitude ?: "",
-            phone = it.phone ?: "",
-            websiteUrl = it.websiteUrl ?: "",
-            updatedAt = it.updatedAt ?: "",
-            createdAt = it.createdAt ?: ""
+            id = it.id,
+            obdbId = it.obdbId,
+            name = it.name,
+            breweryType = it.breweryType,
+            street = it.street,
+            address2 = it.address2,
+            address3 = it.address3,
+            city = it.city,
+            state = it.state,
+            countyProvince = it.countyProvince,
+            postalCode = it.postalCode,
+            country = it.country,
+            longitude = it.longitude,
+            latitude = it.latitude,
+            phone = it.phone,
+            websiteUrl = it.websiteUrl,
+            updatedAt = it.updatedAt,
+            createdAt = it.createdAt
         )
     }
 }

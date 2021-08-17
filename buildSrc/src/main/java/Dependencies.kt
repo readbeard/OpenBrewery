@@ -146,4 +146,8 @@ object Libs {
         const val room_ktx = "androidx.room:room-ktx:$version"
         const val pagination = "androidx.room:room-paging:2.4.0-alpha04"
     }
+
+    object JsonSerializer {
+        const val core = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0"
+    }
 }

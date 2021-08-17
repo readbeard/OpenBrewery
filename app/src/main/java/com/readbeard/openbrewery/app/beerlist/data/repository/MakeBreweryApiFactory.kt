@@ -1,16 +1,17 @@
 package com.readbeard.openbrewery.app.beerlist.data.repository
 
-import com.google.gson.FieldNamingPolicy
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.readbeard.openbrewery.app.beerlist.data.remote.BreweryApi
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
+@ExperimentalSerializationApi
 object MakeBreweryApiFactory {
     private const val BASE_URL = "https://api.openbrewerydb.org/"
     private const val TIMEOUT_MILLIS = 120L
@@ -19,18 +20,18 @@ object MakeBreweryApiFactory {
         val okHttpClient = makeOkHttpClient(
             makeLoggingInterceptor()
         )
-        return makeBreweryApi(okHttpClient, makeGson())
+        return makeBreweryApi(okHttpClient)
     }
 
-    private fun makeBreweryApi(okHttpClient: OkHttpClient, gson: Gson): BreweryApi {
-        return makeRetrofit(okHttpClient, gson).create(BreweryApi::class.java)
+    private fun makeBreweryApi(okHttpClient: OkHttpClient): BreweryApi {
+        return makeRetrofit(okHttpClient).create(BreweryApi::class.java)
     }
 
-    private fun makeRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
+    private fun makeRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
             .build()
     }
 
@@ -42,13 +43,6 @@ object MakeBreweryApiFactory {
             .connectTimeout(TIMEOUT_MILLIS, TimeUnit.SECONDS)
             .readTimeout(TIMEOUT_MILLIS, TimeUnit.SECONDS)
             .build()
-    }
-
-    private fun makeGson(): Gson {
-        return GsonBuilder()
-            .setLenient()
-            .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
-            .create()
     }
 
     private fun makeLoggingInterceptor(): HttpLoggingInterceptor {

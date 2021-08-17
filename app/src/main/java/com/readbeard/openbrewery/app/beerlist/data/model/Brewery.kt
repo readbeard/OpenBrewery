@@ -1,61 +1,44 @@
 package com.readbeard.openbrewery.app.beerlist.data.model
 
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Brewery(
-    @SerializedName("id")
-    @Expose
-    val id: Int? = -1,
-    @SerializedName("obdb_id")
-    @Expose
-    val obdbId: String? = "-1",
-    @SerializedName("name")
-    @Expose
+    @SerialName("id")
+    val id: Int,
+    @SerialName("obdb_id")
+    val obdbId: String,
+    @SerialName("name")
     val name: String? = "Test Brewery",
-    @SerializedName("brewery_type")
-    @Expose
+    @SerialName("brewery_type")
     val breweryType: String? = "Test brewery type",
-    @SerializedName("street")
-    @Expose
+    @SerialName("street")
     val street: String? = "Test brewery street",
-    @SerializedName("address_2")
-    @Expose
+    @SerialName("address_2")
     val address2: String? = "Test brewery address2",
-    @SerializedName("address_3")
-    @Expose
+    @SerialName("address_3")
     val address3: String? = "Test brewery address3",
-    @SerializedName("city")
-    @Expose
+    @SerialName("city")
     val city: String? = "Test brewery city",
-    @SerializedName("state")
-    @Expose
+    @SerialName("state")
     val state: String? = "Test brewery state",
-    @SerializedName("county_province")
-    @Expose
+    @SerialName("county_province")
     val countyProvince: String? = "Test brewery contry province",
-    @SerializedName("postal_code")
-    @Expose
+    @SerialName("postal_code")
     val postalCode: String? = "Test brewery postal code",
-    @SerializedName("country")
-    @Expose
+    @SerialName("country")
     val country: String? = "Test brewery country",
-    @SerializedName("longitude")
-    @Expose
+    @SerialName("longitude")
     val longitude: String? = "Test brewery longitude",
-    @SerializedName("latitude")
-    @Expose
+    @SerialName("latitude")
     val latitude: String? = "Test brewery latitude",
-    @SerializedName("phone")
-    @Expose
+    @SerialName("phone")
     val phone: String? = "Test brewery phone",
-    @SerializedName("website_url")
-    @Expose
+    @SerialName("website_url")
     val websiteUrl: String? = "Test brewery website",
-    @SerializedName("updated_at")
-    @Expose
+    @SerialName("updated_at")
     val updatedAt: String? = "Test brewery updated at",
-    @SerializedName("created_at")
-    @Expose
+    @SerialName("created_at")
     val createdAt: String? = "Test brewery created at"
 )
