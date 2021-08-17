@@ -10,5 +10,5 @@ interface BreweryApi {
     suspend fun searchBreweries(): Response<List<Brewery>>
 
     @GET("/breweries")
-    suspend fun searchBreweriesAtPage(@Query("page") page: Int): Response<List<Brewery>>
+    suspend fun searchBreweriesAtPage(@Query("page") page: Int = 1): Response<List<Brewery>>
 }

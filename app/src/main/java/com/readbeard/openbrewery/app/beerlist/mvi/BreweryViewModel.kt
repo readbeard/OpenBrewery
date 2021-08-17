@@ -24,7 +24,7 @@ class BreweryViewModel @Inject constructor(
     private val breweryRepositoryImpl: BreweryRepositoryImpl
 ) : BaseViewModel<BreweryState, BreweryIntent>(BreweryState.Loading) {
 
-    val page = mutableStateOf(1)
+    val page = mutableStateOf(2)
     var savedBreweries = mutableStateOf(ArrayList<Brewery>())
 
     init {
@@ -53,6 +53,7 @@ class BreweryViewModel @Inject constructor(
         setState(BreweryState.Loading)
         viewModelScope.launch(Dispatchers.Main) {
             val breweries = breweryRepositoryImpl.getBreweries(searchTerm)
+
             breweries.stateIn(
                 scope = viewModelScope,
                 started = WhileSubscribed(STOP_TIMEOUT_MILLIS),
@@ -81,7 +82,7 @@ class BreweryViewModel @Inject constructor(
             // Simulate a delay, as the API is pretty fast
             delay(LOADING_DELAY)
 
-            when (val result = breweryRepositoryImpl.loadBreweriesAtPage(page.value++)) {
+            when (val result = breweryRepositoryImpl.loadBreweriesAtPage(page.value)) {
                 is CustomResult.Success -> {
                     incrementPage()
                     appendBreweries(result.value)

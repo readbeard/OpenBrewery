@@ -5,9 +5,7 @@ import com.readbeard.openbrewery.app.beerlist.utils.CustomResult
 import kotlinx.coroutines.flow.Flow
 
 interface BreweryDataStore {
-    fun getBreweriesStream(searchQuery: String): Flow<List<Brewery>>
-
-    suspend fun getBreweries(searchQuery: String): Flow<CustomResult<List<Brewery>>>
+    suspend fun getBreweries(searchQuery: String): CustomResult<List<Brewery>>
 
     suspend fun addBreweries(breweriesList: List<Brewery>): Flow<CustomResult<List<Brewery>>>
 }

@@ -11,12 +11,14 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.serialization.ExperimentalSerializationApi
 import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 class ApiModule {
+    @ExperimentalSerializationApi
     @Provides
     @Singleton
     fun provideBreweryApi() = MakeBreweryApiFactory.makeBreweryApi()

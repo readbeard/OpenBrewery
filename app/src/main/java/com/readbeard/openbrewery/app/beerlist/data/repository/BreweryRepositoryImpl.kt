@@ -7,8 +7,7 @@ import com.readbeard.openbrewery.app.beerlist.utils.CustomResult
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.merge
-import timber.log.Timber
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class BreweryRepositoryImpl @Inject constructor(
@@ -19,33 +18,28 @@ class BreweryRepositoryImpl @Inject constructor(
     @ExperimentalCoroutinesApi
     override suspend fun getBreweries(searchQuery: String): Flow<CustomResult<List<Brewery>>> {
         val localResult = localDataStore.getBreweries(searchQuery)
-        val remoteResult = syncBrewerySearchResult(searchQuery)
+        val remoteResult = remoteDataStore.getBreweries(searchQuery)
 
-        return merge(localResult, remoteResult)
-    }
+        val emptyResponseFromDb =
+            (localResult is CustomResult.Success && localResult.value.isEmpty()) ||
+                localResult is CustomResult.Error
 
-    override suspend fun syncBrewerySearchResult(searchQuery: String):
-        Flow<CustomResult<List<Brewery>>> {
-        val remoteFlow = remoteDataStore.getBreweries(searchQuery)
-        remoteFlow.collect { breweriesListResult ->
-            if (breweriesListResult is CustomResult.Success) {
-                val breweryList = breweriesListResult.value
-                addBreweries(breweryList)
-                    .collect {
-                        Timber.d("Successfully saved on local db")
-                    }
+        if (remoteResult is CustomResult.Error) {
+            return if (emptyResponseFromDb) {
+                flow { emit(CustomResult.Error(Exception("Both data sources failed retrieving data"))) }
             } else {
-                Timber.d("No data found in remote data source")
+                flow { emit(localResult) }
             }
         }
-        return remoteFlow
-    }
 
-    override suspend fun addBreweries(breweriesList: List<Brewery>): Flow<CustomResult<List<Brewery>>> {
-        return localDataStore.addBreweries(breweriesList)
+        return localDataStore.addBreweries((remoteResult as CustomResult.Success).value)
     }
 
     override suspend fun loadBreweriesAtPage(page: Int): CustomResult<List<Brewery>> {
-        return remoteDataStore.getBreweries(page)
+        val fetchedBreweriesResult = remoteDataStore.fetchBreweriesAtPage(page)
+        if (fetchedBreweriesResult is CustomResult.Success) {
+            localDataStore.addBreweries(fetchedBreweriesResult.value).collect()
+        }
+        return fetchedBreweriesResult
     }
 }
