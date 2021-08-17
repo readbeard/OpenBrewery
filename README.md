@@ -1,5 +1,5 @@
 # Open Brewery 🍺
-![Pre Merge Checks](https://github.com/readbeard/OpenBrewery/tree/master/.github/workflows/badge.svg)
+![Pre Merge Checks](https://github.com/readbeard/OpenBrewery/workflows/Pre%20Merge%20Checks/badge.svg)
 ![License](https://img.shields.io/github/license/readbeard/OpenBrewery)
 
 A simple Android client for [Open Brewery DB](https://www.openbrewerydb.org/)
