@@ -12,7 +12,6 @@ enum class BreweryFilter(val value: String) {
 
 fun getAllFilters(): List<BreweryFilter> {
     return listOf(
-        BreweryFilter.NONE,
         BreweryFilter.NAME,
         BreweryFilter.CITY,
         BreweryFilter.POSTALCODE,
@@ -24,5 +23,5 @@ fun getAllFilters(): List<BreweryFilter> {
 
 fun getFilter(value: String): BreweryFilter {
     val map = BreweryFilter.values().associateBy(BreweryFilter::value)
-    return map[value] ?: BreweryFilter.NONE
+    return map[value] ?: BreweryFilter.NAME
 }
