@@ -7,5 +7,5 @@ sealed class BreweryIntent {
         val searchTerm: String
     ) : BreweryIntent()
 
-    data class OnScrolledDown(val index: Int) : BreweryIntent()
+    object OnScrolledDown : BreweryIntent()
 }

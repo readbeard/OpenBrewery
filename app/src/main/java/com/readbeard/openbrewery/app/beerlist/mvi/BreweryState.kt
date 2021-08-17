@@ -9,5 +9,9 @@ sealed class BreweryState {
         val breweries: List<Brewery>
     ) : BreweryState()
 
+    data class ErrorLoadingPage(
+        val breweries: List<Brewery>
+    ) : BreweryState()
+
     object Error : BreweryState()
 }

@@ -8,10 +8,12 @@ import com.readbeard.openbrewery.app.beerlist.presentation.BreweryScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.InternalCoroutinesApi
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    @InternalCoroutinesApi
     @ExperimentalFoundationApi
     @FlowPreview
     @ExperimentalCoroutinesApi

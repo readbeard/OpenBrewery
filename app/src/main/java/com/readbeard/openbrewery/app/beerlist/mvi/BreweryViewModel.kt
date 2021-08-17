@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.stateIn
@@ -24,7 +25,6 @@ class BreweryViewModel @Inject constructor(
 ) : BaseViewModel<BreweryState, BreweryIntent>(BreweryState.Loading) {
 
     val page = mutableStateOf(1)
-    var breweryListScrollPosition = 0
     var savedBreweries = mutableStateOf(ArrayList<Brewery>())
 
     init {
@@ -76,17 +76,23 @@ class BreweryViewModel @Inject constructor(
         }
     }
 
-    fun nextPage() {
+    private fun nextPage() {
         viewModelScope.launch(Dispatchers.Main) {
-            // prevent duplicate event due to recompose happening to quickly
-            incrementPage()
+            // Simulate a delay, as the API is pretty fast
+            delay(LOADING_DELAY)
 
-            if (page.value > 1) {
-                val result = breweryRepositoryImpl.loadBreweriesAtPage(page.value)
-                appendBreweries((result as CustomResult.Success).value)
+            when (val result = breweryRepositoryImpl.loadBreweriesAtPage(page.value++)) {
+                is CustomResult.Success -> {
+                    incrementPage()
+                    appendBreweries(result.value)
+                    setState(BreweryState.Loaded(savedBreweries.value))
+                }
+                is CustomResult.Error -> {
+                    setState(BreweryState.ErrorLoadingPage(savedBreweries.value))
+                }
+                else ->
+                    return@launch
             }
-
-            setState(BreweryState.Loaded(savedBreweries.value))
         }
     }
 
@@ -103,12 +109,8 @@ class BreweryViewModel @Inject constructor(
         page.value = page.value + 1
     }
 
-    fun onChangeBreweryScrollPosition(position: Int) {
-        breweryListScrollPosition = position
-    }
-
     companion object {
         private const val STOP_TIMEOUT_MILLIS = 5000L
-        const val PAGE_SIZE = 20
+        private const val LOADING_DELAY = 1000L
     }
 }
