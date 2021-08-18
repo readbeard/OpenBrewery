@@ -10,7 +10,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.readbeard.openbrewery.app.base.presentation.BreweryFilterChip
 import com.readbeard.openbrewery.app.beerlist.data.model.getAllFilters
 import com.readbeard.openbrewery.app.beerlist.data.model.getFilter
 import com.readbeard.openbrewery.app.beerlist.mvi.BreweryIntent

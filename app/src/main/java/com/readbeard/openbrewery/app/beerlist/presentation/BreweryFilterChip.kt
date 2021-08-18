@@ -1,4 +1,4 @@
-package com.readbeard.openbrewery.app.base.presentation
+package com.readbeard.openbrewery.app.beerlist.presentation
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
