@@ -58,7 +58,8 @@ fun BreweryContentBody(
                 modifier = Modifier.padding(4.dp)
             )
 
-            val showLoadingSpinner = breweries.lastIndex == index && !(uiState as BreweryState.Loaded).reachedEnd
+            val showLoadingSpinner = breweries.lastIndex == index &&
+                (uiState is BreweryState.Loaded) && !(uiState as BreweryState.Loaded).reachedEnd
             AnimatedVisibility(visible = showLoadingSpinner) {
                 BreweryLoadingBody(toEndOfList = true)
             }
@@ -95,7 +96,7 @@ fun LazyListState.shouldLoadMore(): State<Boolean> {
     return remember {
         derivedStateOf {
             val lastVisibleItem = layoutInfo.visibleItemsInfo.lastOrNull()
-                ?: return@derivedStateOf true
+                ?: return@derivedStateOf false
 
             return@derivedStateOf lastVisibleItem.index == layoutInfo.totalItemsCount - 1
         }

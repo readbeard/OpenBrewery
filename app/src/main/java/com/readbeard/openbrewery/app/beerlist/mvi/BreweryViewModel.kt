@@ -131,6 +131,8 @@ class BreweryViewModel @Inject constructor(
     }
 
     private fun loadFilteredValues(searchTerm: String = state.value.searchTerm) {
+        if (searchTerm.isEmpty() && selectedFilter.value != state.value.selectedFilter) return
+
         viewModelScope.launch(Dispatchers.Main) {
             val filterHashMap: HashMap<String, Any> =
                 hashMapOf(Pair(state.value.selectedFilter.value, searchTerm))
@@ -181,7 +183,7 @@ class BreweryViewModel @Inject constructor(
         }
         val newState = BreweryState.Loading
         newState.selectedFilter = newFilter
-        setState(BreweryState.Loading)
+        setState(BreweryState.FilterChanged(savedBreweries, newFilter))
         page = 1
     }
 

@@ -25,4 +25,9 @@ sealed class BreweryState(
 
     object Error : BreweryState()
     object Loading : BreweryState()
+
+    data class FilterChanged(
+        override var breweries: List<Brewery>,
+        override var selectedFilter: BreweryFilter
+    ) : BreweryState()
 }

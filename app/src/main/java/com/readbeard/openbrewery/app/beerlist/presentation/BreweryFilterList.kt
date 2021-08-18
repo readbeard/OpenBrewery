@@ -16,7 +16,6 @@ import com.readbeard.openbrewery.app.beerlist.mvi.BreweryIntent
 import com.readbeard.openbrewery.app.beerlist.mvi.BreweryViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 @FlowPreview
@@ -35,8 +34,7 @@ fun BreweryFilterList() {
                 isSelected = uiState.selectedFilter == getFilter(item.value),
                 onSelectedFilterChanged = {
                     viewModel.onIntent(BreweryIntent.OnFilterSelected(item, uiState.searchTerm))
-                },
-                onExecuteSearch = { Timber.d("Clicked on ${getFilter(item.value).value}") }
+                }
             )
         }
     }

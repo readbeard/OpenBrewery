@@ -16,8 +16,7 @@ import com.readbeard.openbrewery.app.beerlist.data.model.BreweryFilter
 fun BreweryFilterChip(
     filter: BreweryFilter,
     isSelected: Boolean = false,
-    onSelectedFilterChanged: (BreweryFilter) -> Unit,
-    onExecuteSearch: () -> Unit
+    onSelectedFilterChanged: (BreweryFilter) -> Unit
 ) {
     Surface(
         modifier = Modifier.padding(8.dp),
@@ -30,7 +29,6 @@ fun BreweryFilterChip(
                 value = isSelected,
                 onValueChange = {
                     onSelectedFilterChanged(filter)
-                    onExecuteSearch()
                 }
             )
         ) {

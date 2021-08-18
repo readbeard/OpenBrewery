@@ -40,7 +40,7 @@ fun BrewerySearchField() {
             searchTerm = it
         },
         keyboardActions = KeyboardActions(
-            onDone = { viewModel.onIntent(BreweryIntent.OnSearchChanged(uiState.selectedFilter, searchTerm)) }
+            onDone = { viewModel.onIntent(BreweryIntent.OnSearchChanged(uiState.selectedFilter, searchTerm)) },
         )
     )
 }

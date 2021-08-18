@@ -6,7 +6,6 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.readbeard.openbrewery.app.beerlist.mvi.BreweryIntent
 import com.readbeard.openbrewery.app.beerlist.mvi.BreweryState
 import com.readbeard.openbrewery.app.beerlist.mvi.BreweryViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -38,6 +37,9 @@ fun BreweryScreen(
             }
             is BreweryState.Loaded -> {
                 BreweryContentBody(viewModel, (state as BreweryState.Loaded).breweries)
+            }
+            is BreweryState.FilterChanged -> {
+                BreweryContentBody(viewModel, (state as BreweryState.FilterChanged).breweries)
             }
         }
     }
