@@ -1,5 +1,7 @@
 package com.readbeard.openbrewery.app.beerlist.presentation
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
@@ -23,6 +26,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -52,6 +56,7 @@ import kotlinx.coroutines.flow.collect
 import timber.log.Timber
 import java.util.Locale
 
+@ExperimentalAnimationApi
 @InternalCoroutinesApi
 @ExperimentalFoundationApi
 @ExperimentalCoroutinesApi
@@ -75,9 +80,6 @@ fun BreweryScreen(
             }
             is BreweryState.Error -> {
                 BreweryErrorBody()
-            }
-            is BreweryState.ErrorLoadingPage -> {
-                BreweryContentBody(viewModel, (state as BreweryState.ErrorLoadingPage).breweries)
             }
             is BreweryState.Loaded -> {
                 BreweryContentBody(viewModel, (state as BreweryState.Loaded).breweries)
@@ -114,8 +116,10 @@ fun BreweryTopBar(
                     .fillMaxWidth(),
                 onValueChange = {
                     searchTerm = it
-                    onSearchTextChanged(it)
-                }
+                },
+                keyboardActions = KeyboardActions(
+                    onDone = { onSearchTextChanged(searchTerm) }
+                )
             )
 
             LazyRow(
@@ -164,6 +168,7 @@ fun BreweryErrorBody(
     }
 }
 
+@ExperimentalAnimationApi
 @InternalCoroutinesApi
 @ExperimentalFoundationApi
 @ExperimentalCoroutinesApi
@@ -184,18 +189,16 @@ fun BreweryContentBody(
         ),
         modifier = modifier
             .fillMaxHeight()
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         itemsIndexed(breweries) { index, brewery ->
-            val uiState by viewModel.state
-
-            if (breweries.lastIndex == index && uiState !is BreweryState.ErrorLoadingPage) {
+            BreweryCard(
+                brewery,
+                modifier = Modifier.padding(4.dp)
+            )
+            val showLoadingSpinner = breweries.lastIndex == index && !(uiState as BreweryState.Loaded).reachedEnd
+            AnimatedVisibility(visible = showLoadingSpinner) {
                 BrewerySpinner(modifier = Modifier.padding(4.dp))
-            } else {
-                BreweryCard(
-                    brewery,
-                    modifier = Modifier.padding(4.dp)
-                )
             }
         }
     }
@@ -253,14 +256,7 @@ fun BrewerySpinner(modifier: Modifier) {
 fun LazyListState.OnBottomReached(
     loadMore: () -> Unit
 ) {
-    val shouldLoadMore = remember {
-        derivedStateOf {
-            val lastVisibleItem = layoutInfo.visibleItemsInfo.lastOrNull()
-                ?: return@derivedStateOf true
-
-            lastVisibleItem.index == layoutInfo.totalItemsCount - 1
-        }
-    }
+    val shouldLoadMore = shouldLoadMore()
 
     LaunchedEffect(shouldLoadMore) {
         snapshotFlow { shouldLoadMore.value }
@@ -269,5 +265,19 @@ fun LazyListState.OnBottomReached(
                     loadMore()
                 }
             }
+    }
+}
+
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
+@Composable
+fun LazyListState.shouldLoadMore(): State<Boolean> {
+    return remember {
+        derivedStateOf {
+            val lastVisibleItem = layoutInfo.visibleItemsInfo.lastOrNull()
+                ?: return@derivedStateOf true
+
+            return@derivedStateOf lastVisibleItem.index == layoutInfo.totalItemsCount - 1
+        }
     }
 }
