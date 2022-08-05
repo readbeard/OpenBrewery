@@ -27,7 +27,7 @@ fun BreweryScreen(
         topBar = {
             BreweryTopBar()
         }
-    ) {
+    ) { padding ->
         when (state) {
             is BreweryState.Loading -> {
                 BreweryLoadingBody(toEndOfList = false)
@@ -36,10 +36,10 @@ fun BreweryScreen(
                 BreweryErrorBody()
             }
             is BreweryState.Loaded -> {
-                BreweryContentBody(viewModel, (state as BreweryState.Loaded).breweries)
+                BreweryContentBody(viewModel, (state as BreweryState.Loaded).breweries, padding)
             }
             is BreweryState.FilterChanged -> {
-                BreweryContentBody(viewModel, (state as BreweryState.FilterChanged).breweries)
+                BreweryContentBody(viewModel, (state as BreweryState.FilterChanged).breweries, padding)
             }
         }
     }

@@ -38,19 +38,17 @@ import kotlinx.coroutines.flow.collect
 fun BreweryContentBody(
     viewModel: BreweryViewModel,
     breweries: List<Brewery>,
-    modifier: Modifier = Modifier
+    paddingValues: PaddingValues
 ) {
     val uiState by viewModel.state
     val state = rememberLazyListState()
 
     LazyColumn(
         state = state,
-        contentPadding = PaddingValues(
-            4.dp
-        ),
-        modifier = modifier
+        contentPadding = paddingValues,
+        modifier = Modifier
             .fillMaxHeight()
-            .fillMaxWidth(),
+            .fillMaxWidth()
     ) {
         itemsIndexed(breweries) { index, brewery ->
             BreweryCard(
