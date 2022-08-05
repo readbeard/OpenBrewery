@@ -6,9 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Brewery(
     @SerialName("id")
-    val id: Int,
-    @SerialName("obdb_id")
-    val obdbId: String,
+    val id: String,
     @SerialName("name")
     val name: String? = "Test Brewery",
     @SerialName("brewery_type")

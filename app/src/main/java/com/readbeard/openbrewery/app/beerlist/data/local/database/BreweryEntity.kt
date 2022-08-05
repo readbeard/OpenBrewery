@@ -5,9 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "breweries")
 data class BreweryEntity(
-    val id: Int,
     @PrimaryKey
-    val obdbId: String,
+    val id: String,
     val name: String? = "Unknown",
     val breweryType: String? = "Unknown",
     val street: String? = "Unknown",

@@ -21,7 +21,6 @@ class LocalBreweryDataStore @Inject constructor(private val breweryDao: BreweryD
                 .map {
                     Brewery(
                         id = it.id,
-                        obdbId = it.obdbId,
                         name = it.name,
                         breweryType = it.breweryType,
                         street = it.street,
@@ -68,7 +67,6 @@ class LocalBreweryDataStore @Inject constructor(private val breweryDao: BreweryD
     private fun mapBreweryToBreweryEntity(it: Brewery): BreweryEntity {
         return BreweryEntity(
             id = it.id,
-            obdbId = it.obdbId,
             name = it.name,
             breweryType = it.breweryType,
             street = it.street,
