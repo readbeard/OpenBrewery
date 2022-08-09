@@ -12,13 +12,13 @@ object Versions {
     const val CORE_KTX = "1.6.0"
     const val ESPRESSO_CORE = "3.4.0"
     const val JUNIT = "4.13.2"
-    const val KTLINT = "0.46.1"
+    const val KTLINT = "0.42.1"
     const val ANDROID_GRADLE_PLUGIN = "7.2.1"
 }
 
 object BuildPluginsVersion {
     const val DETEKT = "1.17.1"
-    const val KTLINT = "10.1.0"
+    const val KTLINT = "10.3.0"
     const val VERSIONS_PLUGIN = "0.39.0"
 }
 
